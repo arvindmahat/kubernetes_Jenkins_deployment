@@ -3,6 +3,9 @@ pipeline {
     dockerimagename = "praveensingam1994/nodeapp"
     dockerImage = ""
   }
+  tools {
+        docker 'MyDocker'
+    }
   
   agent any
 
