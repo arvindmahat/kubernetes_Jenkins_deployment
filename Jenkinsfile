@@ -4,14 +4,11 @@ pipeline {
     
     environment {
         dockerimagename = "docker1196/sb2.0"
-        registry = "docker1196/myspc"
+        registry = "docker1196/2.0"
         registryCredential = "Dockerhub_id"
         dockerImage = ''
     }
-    tools {
-        maven 'MVN_version'
-    }
-  
+    
   
     stages {
 
@@ -21,12 +18,7 @@ pipeline {
        }
     }
 
-    stage('Build package') {
-       steps {
-         sh 'mvn clean package '
-       }
-    }
-        
+           
     stage('Build Container') {
       steps {
         echo 'Building Container..'
@@ -47,14 +39,12 @@ pipeline {
       
     stage('Build B') {
              steps {
-                 build job: "Sonar_Project", wait: true
+                 build job: "test", wait: true
                     }
     }    
 
     stage('Pushing Image') {
-       environment {
-                registryCredential = 'dockerhubcred'
-            }
+      
        steps{
          script {
            docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
@@ -65,14 +55,7 @@ pipeline {
        }
     }
 
-    stage('Deploying App to Kubernetes') {
-       steps {
-         script {
-           kubernetesDeploy(configs: "deploymentservice.yml", kubeconfigId: "kubernetes")
-         }
-       }
-    }
-
+    
   }
 
 }
