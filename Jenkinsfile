@@ -8,6 +8,9 @@ pipeline {
         registryCredential = "Dockerhub_id"
         dockerImage = ''
     }
+    tools {
+        maven 'MVN_version'
+    }
   
   
     stages {
